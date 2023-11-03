@@ -3,7 +3,7 @@ from aiogram.types import ReplyKeyboardMarkup, ReplyKeyboardRemove, KeyboardButt
 
 def get_main_menu_kb() -> ReplyKeyboardMarkup:
     """
-    Default main keyboard
+    ГЛАВНОЕ МЕНЮ
     """
     btn_1 = KeyboardButton(text="Активировать подписку")
     btn_2 = KeyboardButton(text="Поддержка")
@@ -17,7 +17,7 @@ def get_main_menu_kb() -> ReplyKeyboardMarkup:
 
 def get_support_menu_kb() -> ReplyKeyboardMarkup:
     """
-    Support keyboard
+    ПОДДЕРЖКА
     """
     btn_1 = KeyboardButton(text="Оформить заявку")
     btn_2 = KeyboardButton(text="Назад")
@@ -28,3 +28,64 @@ def get_support_menu_kb() -> ReplyKeyboardMarkup:
     )
     return kb
 
+
+def get_about_company_kb() -> ReplyKeyboardMarkup:
+    """
+    О КОМПАНИИ
+    """
+    btn_1 = KeyboardButton(text="Основная информация")
+    btn_2 = KeyboardButton(text="Сервисы")
+
+    kb = ReplyKeyboardMarkup(
+        resize_keyboard=True,
+        keyboard=[[btn_1, btn_2]]
+    )
+    return kb
+
+
+def get_about_company_main_info() -> ReplyKeyboardMarkup:
+    """
+    О КОМПАНИИ - ОСНОВНАЯ ИНФОРМАЦИЯ -
+
+    --ПРИВЕЛЕГИИ--
+    """
+    btn_1 = KeyboardButton(text="Привелегии")
+    btn_2 = KeyboardButton(text="Главное меню")
+
+    kb = ReplyKeyboardMarkup(
+        resize_keyboard=True,
+        keyboard=[[btn_1], [btn_2]]
+    )
+    return kb
+
+
+def get_about_compony_services() -> ReplyKeyboardMarkup:
+    """
+    О КОМПАНИИ - СЕРВИСЫ
+
+    --все сервисы--
+    """
+    btn_1 = KeyboardButton(text="S1")
+    btn_2 = KeyboardButton(text="S2")
+    btn_3 = KeyboardButton(text="S3")
+    btn_4 = KeyboardButton(text="Главное меню")
+
+    kb = ReplyKeyboardMarkup(
+        resize_keyboard=True,
+        keyboard=[[btn_1],[btn_2],[btn_3],[btn_4]]
+    )
+    return kb
+
+
+def get_only_main_menu_btn() -> None:
+    """
+    ТОЛЬКО КНОПКА ВОЗВРАТА В ГЛАВНОЕ МЕНЮ
+    ENDPOINT
+    """
+    btn_1 = KeyboardButton(text="Главное меню")
+
+    kb = ReplyKeyboardMarkup(
+        resize_keyboard=True,
+        keyboard=[[btn_1]]
+    )
+    return kb
