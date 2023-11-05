@@ -1,5 +1,6 @@
 from aiogram.types import ReplyKeyboardMarkup, ReplyKeyboardRemove, KeyboardButton, InlineKeyboardMarkup, \
     InlineKeyboardButton, CallbackQuery
+from aiogram.utils.keyboard import KeyboardBuilder
 
 def get_main_menu_kb() -> ReplyKeyboardMarkup:
     """
@@ -77,7 +78,7 @@ def get_about_compony_services() -> ReplyKeyboardMarkup:
     return kb
 
 
-def get_only_main_menu_btn() -> None:
+def get_only_main_menu_btn() -> ReplyKeyboardMarkup:
     """
     ТОЛЬКО КНОПКА ВОЗВРАТА В ГЛАВНОЕ МЕНЮ
     ENDPOINT
@@ -89,3 +90,22 @@ def get_only_main_menu_btn() -> None:
         keyboard=[[btn_1]]
     )
     return kb
+
+
+def get_activation_subscribe_privileges() -> ReplyKeyboardMarkup:
+    """
+    Активировать подписку
+
+    --Привилегии--
+    !!!ПОКА ЧТО ИЗ МАССИВА ВНУТРИ ФУНКЦИИ - privileges
+    !!!!! ОТКУДА БРАТЬ ПРИВИЛЕГИИ ИЗ БД ИЛИ ВРУЧНУЮ ИХ ВПИХНУТЬ
+    """
+    privileges = ["Привилегия 1", "Привилегия 2"]
+    builder = KeyboardBuilder(button_type=KeyboardButton)
+    for privilege in privileges:
+        builder.add(KeyboardButton(text=privilege))
+
+    builder.adjust(1, 2)
+    return builder.as_markup(resize_keyboard=True)
+
+

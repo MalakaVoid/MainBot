@@ -11,14 +11,29 @@ router = Router()
 
 
 class SupportStates(StatesGroup):
+    """
+    СОСТОЯНИЯ ДЛЯ ВЕТКИ ПОДДЕРЖКА
+    """
     startSupport = State()
     makeRequest = State()
 
 
 class AboutCompanyStates(StatesGroup):
+    """
+    СОСТОЯНИЯ ДЛЯ ВЕТКИ О КОМПАНИИ
+    """
     start = State()
     mainInfo = State()
     services = State()
+
+
+class ActivateSubState(StatesGroup):
+    """
+    СОСТОЯНИЯ ДЛЯ ВЕТКИ АКТИВАЦИЯ ПОДПИСКИ
+    """
+    start = State()
+    privilege = State()
+    pay = State()
 
 
 @router.message(CommandStart())
@@ -31,10 +46,11 @@ async def start_command(message: Message) -> None:
 
 
 @router.message(F.text == "Главное меню")
-async def go_to_main_menu_btn(message: Message):
+async def go_to_main_menu_btn(message: Message, state: FSMContext):
     """
     ОТПРАВКА В ГЛАВНОЕ МЕНЮ ИЗ ЛЮБОЙ ТОЧКИ
     """
+    await state.clear()
     await message.answer("Главное меню",
                          reply_markup=start_keyboards.get_main_menu_kb())
 
@@ -70,7 +86,7 @@ async def make_request_to_support_btn(message: Message, state: FSMContext) -> No
 
 
 @router.message(F.text == "О компании")
-async def about_company_btn(message: Message, state: FSMContext):
+async def about_company_btn(message: Message, state: FSMContext) -> None:
     """
     ОБРАБОТЧИК КНОПКИ О КОМПАНИИ
     """
@@ -80,7 +96,7 @@ async def about_company_btn(message: Message, state: FSMContext):
 
 
 @router.message(AboutCompanyStates.start, F.text == "Основная информация")
-async def main_info_about_company_btn(message: Message, state: FSMContext):
+async def main_info_about_company_btn(message: Message, state: FSMContext) -> None:
     """
     ОБРАБОТЧИК КНОПКИ ОСНОВАНЯ ИНФОРМАЦИЯ О КОМПАНИИ
     """
@@ -90,7 +106,7 @@ async def main_info_about_company_btn(message: Message, state: FSMContext):
 
 
 @router.message(AboutCompanyStates.mainInfo, F.text == "Привелегии")
-async def main_info_about_company_privelegies_btn(message: Message, state: FSMContext):
+async def main_info_about_company_privelegies_btn(message: Message, state: FSMContext) -> None:
     """
     ОБРАБОТЧИК КНОПКИ ПРИВЕЛЕГИИ В ОСНОВНОЙ ИНФОРМАЦИИ О КОМПАНИИ
     """
@@ -99,10 +115,22 @@ async def main_info_about_company_privelegies_btn(message: Message, state: FSMCo
 
 
 @router.message(AboutCompanyStates.start, F.text == "Сервисы")
-async def about_company_services_btn(message: Message, state: FSMContext):
+async def about_company_services_btn(message: Message, state: FSMContext) -> None:
     """
     ОБРАБОТЧИК КНОПКИ СЕРВИСЫ ИЗ О КОМПАНИИ
     """
     await state.set_state(AboutCompanyStates.services)
     await message.answer("Сервисы",
                          reply_markup=start_keyboards.get_about_compony_services())
+
+
+@router.message(F.text == "Активировать подписку")
+async def activate_subscription_btn(message: Message, state: FSMContext) -> None:
+    """
+    ОБРАБОТЧИК КНОПКИ АКТИВИРОВАТЬ ПОДПИСКУ
+    """
+    await state.set_state(ActivateSubState.start)
+    await message.answer("Активировать подписку\nВыберите привелегию.",
+                         reply_markup=start_keyboards.get_activation_subscribe_privileges())
+
+
