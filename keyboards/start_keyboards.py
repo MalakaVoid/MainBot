@@ -36,10 +36,11 @@ def get_about_company_kb() -> ReplyKeyboardMarkup:
     """
     btn_1 = KeyboardButton(text="Основная информация")
     btn_2 = KeyboardButton(text="Сервисы")
+    btn_3 = KeyboardButton(text="Главное меню")
 
     kb = ReplyKeyboardMarkup(
         resize_keyboard=True,
-        keyboard=[[btn_1, btn_2]]
+        keyboard=[[btn_1, btn_2], [btn_3]]
     )
     return kb
 
@@ -105,7 +106,21 @@ def get_activation_subscribe_privileges() -> ReplyKeyboardMarkup:
     for privilege in privileges:
         builder.add(KeyboardButton(text=privilege))
 
-    builder.adjust(1, 2)
+    builder.add(KeyboardButton(text="Главное меню"))
+    builder.adjust(1, repeat=True)
     return builder.as_markup(resize_keyboard=True)
 
 
+def get_activation_subscribe_privileges_cur() -> ReplyKeyboardMarkup:
+    """
+    ПРИВЕЛЕГИЯ NUM
+    --ОПЛАТА--
+    """
+    btn_1 = KeyboardButton(text="Оплата")
+    btn_2 = KeyboardButton(text="Назад")
+
+    kb = ReplyKeyboardMarkup(
+        resize_keyboard=True,
+        keyboard=[[btn_1], [btn_2]]
+    )
+    return kb

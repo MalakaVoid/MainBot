@@ -31,7 +31,6 @@ class ActivateSubState(StatesGroup):
     """
     СОСТОЯНИЯ ДЛЯ ВЕТКИ АКТИВАЦИЯ ПОДПИСКИ
     """
-    start = State()
     privilege = State()
     pay = State()
 
@@ -129,8 +128,52 @@ async def activate_subscription_btn(message: Message, state: FSMContext) -> None
     """
     ОБРАБОТЧИК КНОПКИ АКТИВИРОВАТЬ ПОДПИСКУ
     """
-    await state.set_state(ActivateSubState.start)
-    await message.answer("Активировать подписку\nВыберите привелегию.",
+    await state.set_state(ActivateSubState.privilege)
+    await message.answer("Активировать подписку\nВыберите привилегию.",
                          reply_markup=start_keyboards.get_activation_subscribe_privileges())
 
 
+@router.message(ActivateSubState.privilege, F.text == "Привилегия 1")
+async def privilege_one_btn(message: Message, state: FSMContext) -> None:
+    """
+    ОБРАБОТЧИК КНОПКИ ПРИВИЛЕГИИ 1 В АКТИВАЦИИ ПОДПИСКИ
+    """
+    await state.set_state(state=ActivateSubState.pay)
+    await state.set_data({"privilege": 1})
+    await message.answer("Привилегия 1",
+                         reply_markup=start_keyboards.get_activation_subscribe_privileges_cur())
+
+
+@router.message(ActivateSubState.privilege, F.text == "Привилегия 2")
+async def privilege_two_btn(message: Message, state: FSMContext) -> None:
+    """
+    ОБРАБОТЧИК КНОПКИ ПРИВИЛЕГИИ 2 В АКТИВАЦИИ ПОДПИСКИ
+    """
+    await state.set_state(state=ActivateSubState.pay)
+    await state.set_data({"privilege": 2})
+    await message.answer("Привилегия 2",
+                         reply_markup=start_keyboards.get_activation_subscribe_privileges_cur())
+
+
+@router.message(ActivateSubState.pay, F.text == "Оплата")
+async def payment_btn(message: Message, state: FSMContext) -> None:
+    """
+    ОБРАБОТЧИК КНОПКИ ОПЛАТЫ ПОСЛЕ ВЫБОРА ПРИВИЛЕГИИ
+    """
+    data = await state.get_data()
+    print(data)
+
+    await state.clear()
+    await message.answer(f"Оплата привелегии {data['privilege']}")
+    await message.answer("Главное меню",
+                         reply_markup=start_keyboards.get_main_menu_kb())
+
+
+@router.message(ActivateSubState.pay, F.text == "Назад")
+async def back_from_pay_btn(message: Message, state: FSMContext) -> None:
+    """
+    ОБРАБОТЧИК КНЛППКИ НАЗАД ИЗ ОПЛАТЫ
+    """
+    await state.set_state(ActivateSubState.privilege)
+    await message.answer("Активировать подписку\nВыберите привилегию.",
+                         reply_markup=start_keyboards.get_activation_subscribe_privileges())
